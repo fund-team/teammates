@@ -7,6 +7,13 @@
       "email": "FQLogicPCT.instr@gmail.tmt",
       "institute": "TEAMMATES Test Institute 1"
     },
+    "FQLogicPCT.garry": {
+      "googleId": "FQLogicPCT.garry",
+      "name": "Garry",
+      "isInstructor": true,
+      "email": "FQLogicPCT.garry@gmail.tmt",
+      "institute": "TEAMMATES Test Institute 1"
+    },
     "FQLogicPCT.alice.b": {
       "googleId": "FQLogicPCT.alice.b",
       "name": "Alice B.",
@@ -74,6 +81,29 @@
           "canModifySessionCommentsInSections": true,
           "canModifyCourse": true,
           "canViewSessionInSections": true,
+          "canModifySession": true,
+          "canModifyStudent": true,
+          "canModifyInstructor": true
+        },
+        "sectionLevel": {},
+        "sessionLevel": {}
+      }
+    },
+    "FQLogicPCT.instr2": {
+      "googleId": "FQLogicPCT.garry",
+      "courseId": "FQLogicPCT.CS2104",
+      "name": "Garry",
+      "email": "FQLogicPCT.garry@gmail.tmt",
+      "role": "Custom",
+      "isDisplayedToStudents": false,
+      "displayedName": "Garry",
+      "privileges": {
+        "courseLevel": {
+          "canViewStudentInSections": true,
+          "canSubmitSessionInSections": true,
+          "canModifySessionCommentsInSections": true,
+          "canModifyCourse": true,
+          "canViewSessionInSections": false,
           "canModifySession": true,
           "canModifyStudent": true,
           "canModifyInstructor": true
@@ -245,6 +275,27 @@
       "showRecipientNameTo": [
         "RECEIVER"
       ]
+    },
+    "qn4InSession1": {
+      "feedbackSessionName": "First Session",
+      "courseId": "FQLogicPCT.CS2104",
+      "questionDetails": {
+        "questionType": "TEXT",
+        "questionText": "Message to instructor."
+      },
+      "questionNumber": 4,
+      "giverType": "STUDENTS",
+      "recipientType": "INSTRUCTORS",
+      "numberOfEntitiesToGiveFeedbackTo": -100,
+      "showResponsesTo": [
+        "INSTRUCTORS"
+      ],
+      "showGiverNameTo": [
+        "INSTRUCTORS"
+      ],
+      "showRecipientNameTo": [
+        "INSTRUCTORS"
+      ]
     }
   },
   "feedbackResponses": {
@@ -301,6 +352,17 @@
       "responseDetails": {
         "questionType": "TEXT",
         "answer": "Alice to Emily"
+      }
+    },
+    "response7": {
+      "feedbackSessionName": "First Session",
+      "courseId": "FQLogicPCT.CS2104",
+      "feedbackQuestionId": "4",
+      "giver": "FQLogicPCT.alice.b@gmail.tmt",
+      "recipient": "FQLogicPCT.garry@gmail.tmt",
+      "responseDetails": {
+        "questionType": "TEXT",
+        "answer": "Alice to instructor Garry"
       }
     }
   },

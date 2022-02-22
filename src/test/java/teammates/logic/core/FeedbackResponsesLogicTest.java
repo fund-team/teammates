@@ -10,11 +10,7 @@ import java.util.stream.Collectors;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import teammates.common.datatransfer.AttributesDeletionQuery;
-import teammates.common.datatransfer.CourseRoster;
-import teammates.common.datatransfer.DataBundle;
-import teammates.common.datatransfer.FeedbackParticipantType;
-import teammates.common.datatransfer.SessionResultsBundle;
+import teammates.common.datatransfer.*;
 import teammates.common.datatransfer.attributes.FeedbackQuestionAttributes;
 import teammates.common.datatransfer.attributes.FeedbackResponseAttributes;
 import teammates.common.datatransfer.attributes.FeedbackResponseCommentAttributes;
@@ -842,6 +838,12 @@ public class FeedbackResponsesLogicTest extends BaseLogicTest {
 
         FeedbackQuestionAttributes question4 = fqLogic.getFeedbackQuestion(
                 "First Session", "FQLogicPCT.CS2104", 4);
+
+        // Garry will see 0 response: instructor privilege "canViewSessionInSections" set to false
+        bundle = frLogic.getSessionResultsForUser(
+                "First Session", "FQLogicPCT.CS2104", "FQLogicPCT.garry@gmail.tmt",
+                true, question4.getId());
+        assertEquals(0, bundle.getQuestionResponseMap().size());
     }
 
     @Test
