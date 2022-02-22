@@ -8,10 +8,10 @@ Reached Branch ID: 6: true
 Reached Branch ID: 7: true
 Reached Branch ID: 8: true
 Reached Branch ID: 9: true
-Reached Branch ID: 10: false
+Reached Branch ID: 10: true
 Reached Branch ID: 11: true
 Reached Branch ID: 12: true
-Reached Branch ID: 13: false
+Reached Branch ID: 13: true
 Reached Branch ID: 14: true
 Reached Branch ID: 15: true
 Reached Branch ID: 16: false
@@ -33,23 +33,23 @@ Reached Branch ID: 31: true
 Reached Branch ID: 32: false
 Reached Branch ID: 33: true
 Reached Branch ID: 34: true
-Reached Branch ID: 35: false
+Reached Branch ID: 35: true
 Reached Branch ID: 36: true
 Reached Branch ID: 37: true
 Reached Branch ID: 38: true
 Reached Branch ID: 39: true
 Reached Branch ID: 40: false
 Reached Branch ID: 41: true
-Reached Branch ID: 42: false
-Reached Branch ID: 43: false
-Reached Branch ID: 44: false
-Reached Branch ID: 45: false
-Reached Branch ID: 46: false
+Reached Branch ID: 42: true
+Reached Branch ID: 43: true
+Reached Branch ID: 44: true
+Reached Branch ID: 45: true
+Reached Branch ID: 46: true
 Reached Branch ID: 47: true
 Reached Branch ID: 48: false
 Reached Branch ID: 49: true
 Reached Branch ID: 50: true
 Reached Branch ID: 51: true
-Number of Branches Covered: 38
+Number of Branches Covered: 46
 Total Number of Branchs: 52
-Coverage: 0.7307692
+Coverage: 0.88461536

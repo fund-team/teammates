@@ -978,6 +978,128 @@ public class FeedbackQuestionsLogicTest extends BaseLogicTest {
                 assertTrue(completeGiverRecipientMap.get("Team 1.2").contains("Team 1.1</td></div>'\""));
         }
 
+        // --------------- Extra Test cases START ----------------------------
+        @Test
+        public void testGetRecipientsOfQuestion2() throws Exception {
+                FeedbackQuestionAttributes question;
+                StudentAttributes studentGiver;
+                InstructorAttributes instructorGiver;
+                CourseRoster courseRoster;
+                Map<String, String> recipients;
+
+                ______TS("response to students, total 5");
+
+                question = getQuestionFromDatabase("qn2InSession1InCourse1");
+                question.setRecipientType(FeedbackParticipantType.STUDENTS_IN_SAME_SECTION);
+                studentGiver = dataBundle.students.get("student1InCourse1");
+                courseRoster = new CourseRoster(
+                                studentsLogic.getStudentsForCourse(studentGiver.getCourse()),
+                                instructorsLogic.getInstructorsForCourse(studentGiver.getCourse()));
+
+                recipients = fqLogic.getRecipientsOfQuestion(question, null, studentGiver, null);
+                assertEquals(recipients.size(), 3); // 5 students minus giver himself minus the student in the same
+                                                    // section
+                recipients = fqLogic.getRecipientsOfQuestion(question, null, studentGiver, courseRoster);
+                assertEquals(recipients.size(), 3); // should produce the same answer
+        }
+
+        @Test
+        public void testGetRecipientsOfQuestion3() throws Exception {
+                FeedbackQuestionAttributes question;
+                StudentAttributes studentGiver;
+                InstructorAttributes instructorGiver;
+                CourseRoster courseRoster;
+                Map<String, String> recipients;
+
+                ______TS("empty case: response to team members, but alone");
+
+                question = getQuestionFromDatabase("team.members.feedback");
+                question.setRecipientType(FeedbackParticipantType.OWN_TEAM);
+                studentGiver = dataBundle.students.get("student5InCourse1");
+                courseRoster = new CourseRoster(
+                                studentsLogic.getStudentsForCourse(studentGiver.getCourse()),
+                                instructorsLogic.getInstructorsForCourse(studentGiver.getCourse()));
+
+                recipients = fqLogic.getRecipientsOfQuestion(question, null, studentGiver, null);
+                assertEquals(recipients.size(), 1);
+                recipients = fqLogic.getRecipientsOfQuestion(question, null, studentGiver, courseRoster);
+                assertEquals(recipients.size(), 1); // should produce the same answer
+
+                ______TS("response from team to itself");
+
+                question = getQuestionFromDatabase("graceperiod.session.feedbackFromTeamToSelf");
+                question.setRecipientType(FeedbackParticipantType.OWN_TEAM);
+                studentGiver = dataBundle.students.get("student1InCourse1");
+                courseRoster = new CourseRoster(
+                                studentsLogic.getStudentsForCourse(studentGiver.getCourse()),
+                                instructorsLogic.getInstructorsForCourse(studentGiver.getCourse()));
+
+                recipients = fqLogic.getRecipientsOfQuestion(question, null, studentGiver, null);
+                assertEquals(recipients.size(), 1);
+                assertTrue(recipients.containsKey(studentGiver.getTeam()));
+                assertEquals(recipients.get(studentGiver.getTeam()), studentGiver.getTeam());
+                recipients = fqLogic.getRecipientsOfQuestion(question, null, studentGiver, courseRoster);
+                assertEquals(recipients.size(), 1);
+                assertTrue(recipients.containsKey(studentGiver.getTeam()));
+                assertEquals(recipients.get(studentGiver.getTeam()), studentGiver.getTeam());
+
+        }
+
+        @Test
+        public void testGetRecipientsOfQuestion4() throws Exception {
+                FeedbackQuestionAttributes question;
+                StudentAttributes studentGiver;
+                InstructorAttributes instructorGiver;
+                CourseRoster courseRoster;
+                Map<String, String> recipients;
+
+                ______TS("empty case: response to team members, but alone");
+
+                question = getQuestionFromDatabase("team.members.feedback");
+                question.setRecipientType(FeedbackParticipantType.OWN_TEAM_MEMBERS_INCLUDING_SELF);
+                studentGiver = dataBundle.students.get("student5InCourse1");
+                courseRoster = new CourseRoster(
+                                studentsLogic.getStudentsForCourse(studentGiver.getCourse()),
+                                instructorsLogic.getInstructorsForCourse(studentGiver.getCourse()));
+                // One team member
+                recipients = fqLogic.getRecipientsOfQuestion(question, null, studentGiver, null);
+                assertEquals(recipients.size(), 1);
+                recipients = fqLogic.getRecipientsOfQuestion(question, null, studentGiver, courseRoster);
+                assertEquals(recipients.size(), 1); // should produce the same answer
+
+        }
+
+        @Test
+        public void testGetRecipientsOfQuestion5() throws Exception {
+                FeedbackQuestionAttributes question;
+                StudentAttributes studentGiver;
+                InstructorAttributes instructorGiver;
+                CourseRoster courseRoster;
+                Map<String, String> recipients;
+
+                ______TS("response to students, total 5");
+
+                question = getQuestionFromDatabase("qn2InSession1InCourse1");
+
+                question.setRecipientType(FeedbackParticipantType.OWN_TEAM_MEMBERS);
+                studentGiver = dataBundle.students.get("student1InCourse1");
+
+                studentGiver.setEmail("invalidEmail");
+
+                instructorGiver = dataBundle.instructors.get("instructor1OfCourse1");
+                courseRoster = new CourseRoster(
+                                studentsLogic.getStudentsForCourse(instructorGiver.getCourseId()),
+                                instructorsLogic.getInstructorsForCourse(instructorGiver.getCourseId()));
+
+                recipients = fqLogic.getRecipientsOfQuestion(question, instructorGiver, null, null);
+                assertEquals(recipients.size(), 0); // The students email adress is invalid
+                recipients = fqLogic.getRecipientsOfQuestion(question, instructorGiver, null, courseRoster);
+                assertEquals(recipients.size(), 0); // The students email adress is invalid
+
+        }
+
+        // --------------- Extra Test cases END ----------------------------
+
         private void testGetFeedbackQuestionsForInstructor() {
                 List<FeedbackQuestionAttributes> expectedQuestions;
                 List<FeedbackQuestionAttributes> actualQuestions;
