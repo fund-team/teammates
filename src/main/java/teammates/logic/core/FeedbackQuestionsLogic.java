@@ -355,11 +355,19 @@ public final class FeedbackQuestionsLogic {
             @Nullable InstructorAttributes instructorGiver, @Nullable StudentAttributes studentGiver,
             @Nullable CourseRoster courseRoster) {
 
-        assert instructorGiver != null || studentGiver != null;
-        CommonData.branchReached[0] = true;
-        // ID 0
-
         Map<String, String> recipients = new HashMap<>();
+
+        return getRecipientsOfQuestionResult(recipients, question, instructorGiver, studentGiver, courseRoster);
+
+    }
+
+    public Map<String, String> getRecipientsOfQuestionResult(Map<String, String> recipients,
+            FeedbackQuestionAttributes question,
+            @Nullable InstructorAttributes instructorGiver, @Nullable StudentAttributes studentGiver,
+            @Nullable CourseRoster courseRoster) {
+        assert instructorGiver != null || studentGiver != null;
+        // CommonData.branchReached[0] = true;
+        // ID 0
 
         boolean isStudentGiver = studentGiver != null;
         boolean isInstructorGiver = instructorGiver != null;
@@ -368,64 +376,49 @@ public final class FeedbackQuestionsLogic {
         String giverTeam = "";
         String giverSection = "";
         if (isStudentGiver) {
-            CommonData.branchReached[1] = true;
+            // CommonData.branchReached[1] = true;
             // ID 1
             giverEmail = studentGiver.getEmail();
             giverTeam = studentGiver.getTeam();
             giverSection = studentGiver.getSection();
         } else if (isInstructorGiver) {
-            CommonData.branchReached[2] = true;
+            // CommonData.branchReached[2] = true;
             // ID 2
             giverEmail = instructorGiver.getEmail();
             giverTeam = Const.USER_TEAM_FOR_INSTRUCTOR;
             giverSection = Const.DEFAULT_SECTION;
         }
-        CommonData.branchReached[3] = true;
+        // CommonData.branchReached[3] = true;
         // ID 3
 
         FeedbackParticipantType recipientType = question.getRecipientType();
         FeedbackParticipantType generateOptionsFor = recipientType;
-
         switch (recipientType) {
-            case SELF:
-                CommonData.branchReached[4] = true;
-                // ID 4
-                if (question.getGiverType() == FeedbackParticipantType.TEAMS) {
-                    CommonData.branchReached[5] = true;
-                    // ID 5
-                    recipients.put(giverTeam, giverTeam);
-                } else {
-                    CommonData.branchReached[6] = true;
-                    // ID 6
-                    recipients.put(giverEmail, USER_NAME_FOR_SELF);
-                }
-                CommonData.branchReached[7] = true;
-                // ID 7
-                break;
+
             case STUDENTS:
                 // ID 50
-                CommonData.branchReached[50] = true;
+                // CommonData.branchReached[50] = true;
             case STUDENTS_IN_SAME_SECTION:
-                CommonData.branchReached[8] = true;
+                // CommonData.branchReached[8] = true;
                 // ID 8
                 List<StudentAttributes> studentList;
                 if (courseRoster == null) {
-                    CommonData.branchReached[9] = true;
+                    // CommonData.branchReached[9] = true;
                     // ID 9
                     if (generateOptionsFor == FeedbackParticipantType.STUDENTS_IN_SAME_SECTION) {
-                        CommonData.branchReached[10] = true;
+                        // CommonData.branchReached[10] = true;
                         // ID 10
                         studentList = studentsLogic.getStudentsForSection(giverSection, question.getCourseId());
                     } else {
-                        CommonData.branchReached[11] = true;
+                        // CommonData.branchReached[11] = true;
                         // ID 11
                         studentList = studentsLogic.getStudentsForCourse(question.getCourseId());
                     }
                 } else {
-                    CommonData.branchReached[12] = true;
+                    // CommonData.branchReached[12] = true;
                     // ID 12
                     if (generateOptionsFor == FeedbackParticipantType.STUDENTS_IN_SAME_SECTION) {
-                        CommonData.branchReached[13] = true;
+                        // CommonData.branchReached[13] = true;
                         // ID 13
                         final String finalGiverSection = giverSection;
                         studentList = courseRoster.getStudents().stream()
@@ -433,183 +426,226 @@ public final class FeedbackQuestionsLogic {
                                         .equals(finalGiverSection))
                                 .collect(Collectors.toList());
                     } else {
-                        CommonData.branchReached[14] = true;
+                        // CommonData.branchReached[14] = true;
                         // ID 14
                         studentList = courseRoster.getStudents();
                     }
                 }
                 for (StudentAttributes student : studentList) {
-                    CommonData.branchReached[15] = true;
+                    // CommonData.branchReached[15] = true;
                     // ID 15
                     if (isInstructorGiver && !instructorGiver.isAllowedForPrivilege(
                             student.getSection(), question.getFeedbackSessionName(),
                             Const.InstructorPermissions.CAN_SUBMIT_SESSION_IN_SECTIONS)) {
-                        CommonData.branchReached[16] = true;
+                        // CommonData.branchReached[16] = true;
                         // ID 16
                         // instructor can only see students in allowed sections for him/her
                         continue;
                     }
                     // Ensure student does not evaluate himself
                     if (!giverEmail.equals(student.getEmail())) {
-                        CommonData.branchReached[17] = true;
+                        // CommonData.branchReached[17] = true;
                         // ID 17
                         recipients.put(student.getEmail(), student.getName());
                     }
                 }
-                CommonData.branchReached[18] = true;
+                // CommonData.branchReached[18] = true;
                 // ID 18
                 break;
             case INSTRUCTORS:
-                CommonData.branchReached[19] = true;
+                // CommonData.branchReached[19] = true;
                 // ID 19
                 List<InstructorAttributes> instructorsInCourse;
                 if (courseRoster == null) {
-                    CommonData.branchReached[20] = true;
+                    // CommonData.branchReached[20] = true;
                     // ID 20
                     instructorsInCourse = instructorsLogic.getInstructorsForCourse(question.getCourseId());
                 } else {
-                    CommonData.branchReached[21] = true;
+                    // CommonData.branchReached[21] = true;
                     // ID 21
                     instructorsInCourse = courseRoster.getInstructors();
                 }
                 for (InstructorAttributes instr : instructorsInCourse) {
-                    CommonData.branchReached[22] = true;
+                    // CommonData.branchReached[22] = true;
                     // ID 22
                     // remove hidden instructors for students
                     if (isStudentGiver && !instr.isDisplayedToStudents()) {
-                        CommonData.branchReached[23] = true;
+                        // CommonData.branchReached[23] = true;
                         // ID 23
                         continue;
                     }
                     // Ensure instructor does not evaluate himself
                     if (!giverEmail.equals(instr.getEmail())) {
-                        CommonData.branchReached[24] = true;
+                        // CommonData.branchReached[24] = true;
                         // ID 24
                         recipients.put(instr.getEmail(), instr.getName());
                     }
                 }
-                CommonData.branchReached[25] = true;
+                // CommonData.branchReached[25] = true;
                 // ID 25
                 break;
+            default:
+                // CommonData.branchReached[48] = true;
+                // ID 48
+                return getRecipientsOfQuestionFromRestCases(generateOptionsFor, isInstructorGiver, giverEmail,
+                        giverTeam, giverSection, recipients, question,
+                        instructorGiver, studentGiver, courseRoster);
+
+        }
+        // CommonData.branchReached[49] = true;
+        // ID 49
+
+        // CommonData.printVisitedBranches();
+        return recipients;
+    }
+
+    public Map<String, String> getRecipientsOfQuestionFromRestCases(FeedbackParticipantType generateOptionsFor,
+            boolean isInstructorGiver, String giverEmail, String giverTeam,
+            String giverSection, Map<String, String> recipients,
+            FeedbackQuestionAttributes question,
+            @Nullable InstructorAttributes instructorGiver, @Nullable StudentAttributes studentGiver,
+            @Nullable CourseRoster courseRoster) {
+
+        FeedbackParticipantType recipientType = question.getRecipientType();
+
+        switch (recipientType) {
+            case SELF:
+                // CommonData.branchReached[4] = true;
+                // ID 4
+                if (question.getGiverType() == FeedbackParticipantType.TEAMS) {
+                    // CommonData.branchReached[5] = true;
+                    // ID 5
+                    recipients.put(giverTeam, giverTeam);
+                } else {
+                    // CommonData.branchReached[6] = true;
+                    // ID 6
+                    recipients.put(giverEmail, USER_NAME_FOR_SELF);
+                }
+                // CommonData.branchReached[7] = true;
+                // ID 7
+                break;
+
             case TEAMS:
                 // ID 51
-                CommonData.branchReached[51] = true;
+                // CommonData.branchReached[51] = true;
             case TEAMS_IN_SAME_SECTION:
-                CommonData.branchReached[26] = true;
+                // CommonData.branchReached[26] = true;
                 // ID 26
                 Map<String, List<StudentAttributes>> teamToTeamMembersTable;
                 List<StudentAttributes> teamStudents;
                 if (generateOptionsFor == FeedbackParticipantType.TEAMS_IN_SAME_SECTION) {
-                    CommonData.branchReached[25] = true;
+                    // CommonData.branchReached[25] = true;
                     // ID 27
                     teamStudents = studentsLogic.getStudentsForSection(giverSection, question.getCourseId());
                     teamToTeamMembersTable = CourseRoster.buildTeamToMembersTable(teamStudents);
                 } else {
-                    CommonData.branchReached[28] = true;
+                    // CommonData.branchReached[28] = true;
                     // ID 28
                     if (courseRoster == null) {
-                        CommonData.branchReached[29] = true;
+                        // CommonData.branchReached[29] = true;
                         // ID 29
                         teamStudents = studentsLogic.getStudentsForCourse(question.getCourseId());
                         teamToTeamMembersTable = CourseRoster.buildTeamToMembersTable(teamStudents);
                     } else {
-                        CommonData.branchReached[30] = true;
+                        // CommonData.branchReached[30] = true;
                         // ID 30
                         teamToTeamMembersTable = courseRoster.getTeamToMembersTable();
                     }
                 }
                 for (Map.Entry<String, List<StudentAttributes>> team : teamToTeamMembersTable.entrySet()) {
-                    CommonData.branchReached[31] = true;
+                    // CommonData.branchReached[31] = true;
                     // ID 31
                     if (isInstructorGiver && !instructorGiver.isAllowedForPrivilege(
                             team.getValue().iterator().next().getSection(),
                             question.getFeedbackSessionName(),
                             Const.InstructorPermissions.CAN_SUBMIT_SESSION_IN_SECTIONS)) {
-                        CommonData.branchReached[32] = true;
+                        // CommonData.branchReached[32] = true;
                         // ID 32
                         // instructor can only see teams in allowed sections for him/her
                         continue;
                     }
                     // Ensure student('s team) does not evaluate own team.
                     if (!giverTeam.equals(team.getKey())) {
-                        CommonData.branchReached[33] = true;
+                        // CommonData.branchReached[33] = true;
                         // ID 33
                         // recipientEmail doubles as team name in this case.
                         recipients.put(team.getKey(), team.getKey());
                     }
                 }
-                CommonData.branchReached[34] = true;
+                // CommonData.branchReached[34] = true;
                 // ID 34
                 break;
             case OWN_TEAM:
-                CommonData.branchReached[35] = true;
+                // CommonData.branchReached[35] = true;
                 // ID 35
                 recipients.put(giverTeam, giverTeam);
                 break;
             case OWN_TEAM_MEMBERS:
-                CommonData.branchReached[36] = true;
+                // CommonData.branchReached[36] = true;
                 // ID 36
                 List<StudentAttributes> students;
                 if (courseRoster == null) {
-                    CommonData.branchReached[37] = true;
+                    // CommonData.branchReached[37] = true;
                     // ID 37
                     students = studentsLogic.getStudentsForTeam(giverTeam, question.getCourseId());
                 } else {
-                    CommonData.branchReached[38] = true;
+                    // CommonData.branchReached[38] = true;
                     // ID 38
                     students = courseRoster.getTeamToMembersTable().getOrDefault(giverTeam, Collections.emptyList());
                 }
                 for (StudentAttributes student : students) {
-                    CommonData.branchReached[39] = true;
+                    // CommonData.branchReached[39] = true;
                     // ID 39
                     if (!student.getEmail().equals(giverEmail)) {
-                        CommonData.branchReached[40] = true;
+                        // CommonData.branchReached[40] = true;
                         // ID 40
                         recipients.put(student.getEmail(), student.getName());
                     }
                 }
-                CommonData.branchReached[41] = true;
+                // CommonData.branchReached[41] = true;
                 // ID 41
                 break;
             case OWN_TEAM_MEMBERS_INCLUDING_SELF:
-                CommonData.branchReached[42] = true;
+                // CommonData.branchReached[42] = true;
                 // ID 42
                 List<StudentAttributes> teamMembers;
                 if (courseRoster == null) {
-                    CommonData.branchReached[43] = true;
+                    // CommonData.branchReached[43] = true;
                     // ID 43
                     teamMembers = studentsLogic.getStudentsForTeam(giverTeam, question.getCourseId());
                 } else {
-                    CommonData.branchReached[44] = true;
+                    // CommonData.branchReached[44] = true;
                     // ID 44
                     teamMembers = courseRoster.getTeamToMembersTable().getOrDefault(giverTeam, Collections.emptyList());
                 }
                 for (StudentAttributes student : teamMembers) {
-                    CommonData.branchReached[45] = true;
+                    // CommonData.branchReached[45] = true;
                     // ID 45
                     // accepts self feedback too
                     recipients.put(student.getEmail(), student.getName());
                 }
-                CommonData.branchReached[46] = true;
+                // CommonData.branchReached[46] = true;
                 // ID 46
                 break;
             case NONE:
-                CommonData.branchReached[47] = true;
+                // CommonData.branchReached[47] = true;
                 // ID 47
                 recipients.put(Const.GENERAL_QUESTION, Const.GENERAL_QUESTION);
                 break;
             default:
-                CommonData.branchReached[48] = true;
+                // CommonData.branchReached[48] = true;
                 // ID 48
                 break;
         }
-        CommonData.branchReached[49] = true;
+        // CommonData.branchReached[49] = true;
         // ID 49
 
-        CommonData.printVisitedBranches();
+        // CommonData.printVisitedBranches();
         return recipients;
     }
 
+    // ---------------------------- Edited code END
+    // ------------------------------------------
     /**
      * Builds a complete giver to recipient map for a {@code relatedQuestion}.
      *
