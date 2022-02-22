@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 
 public class CommonData {
 
-     static boolean[] branchReached = new boolean[50];
+     static boolean[] branchReached = new boolean[52];
 
      public static void printVisitedBranches() {
 
@@ -17,17 +17,14 @@ public class CommonData {
                file.createNewFile();
                PrintWriter writer = new PrintWriter(file);
                for (int i = 0; i < branchReached.length; i++) {
-                    writer.println(branchReached[i]);
-                    System.out.println(branchReached[i]);
+                    writer.println("Reached Branch ID: " + i + ": " + branchReached[i]);
                     if (branchReached[i]) {
-                         writer.println(i);
                          nbBranchesCovered += 1;
                     }
                }
-               writer.println("nbBranchesCovered: " + nbBranchesCovered);
-               writer.println("branchReached: " + branchReached.length);
+               writer.println("Number of Branches Covered: " + nbBranchesCovered);
+               writer.println("Total Number of Branchs: " + branchReached.length);
                writer.println("Coverage: " + (float) nbBranchesCovered / branchReached.length);
-               System.out.println("Coverage: " + (float) nbBranchesCovered / branchReached.length);
                writer.close();
           } catch (IOException e) {
                e.printStackTrace();

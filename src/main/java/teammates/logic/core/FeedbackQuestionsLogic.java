@@ -403,6 +403,8 @@ public final class FeedbackQuestionsLogic {
                 // ID 7
                 break;
             case STUDENTS:
+                // ID 50
+                CommonData.branchReached[50] = true;
             case STUDENTS_IN_SAME_SECTION:
                 CommonData.branchReached[8] = true;
                 // ID 8
@@ -490,6 +492,8 @@ public final class FeedbackQuestionsLogic {
                 // ID 25
                 break;
             case TEAMS:
+                // ID 51
+                CommonData.branchReached[51] = true;
             case TEAMS_IN_SAME_SECTION:
                 CommonData.branchReached[26] = true;
                 // ID 26
