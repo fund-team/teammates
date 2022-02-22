@@ -1,0 +1,27 @@
+Reached Branch ID: 0: true
+Reached Branch ID: 1: true
+Reached Branch ID: 2: true
+Reached Branch ID: 3: false
+Reached Branch ID: 4: true
+Reached Branch ID: 5: true
+Reached Branch ID: 6: false
+Reached Branch ID: 7: true
+Reached Branch ID: 8: true
+Reached Branch ID: 9: true
+Reached Branch ID: 10: true
+Reached Branch ID: 11: false
+Reached Branch ID: 12: true
+Reached Branch ID: 13: true
+Reached Branch ID: 14: true
+Reached Branch ID: 15: false
+Reached Branch ID: 16: true
+Reached Branch ID: 17: true
+Reached Branch ID: 18: true
+Reached Branch ID: 19: true
+Reached Branch ID: 20: true
+Reached Branch ID: 21: false
+Reached Branch ID: 22: true
+Reached Branch ID: 23: true
+Number of Branches Covered: 19
+Total Number of Branchs: 24
+Coverage: 0.7916667

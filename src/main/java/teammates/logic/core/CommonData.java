@@ -7,13 +7,13 @@ import java.io.PrintWriter;
 
 public class CommonData {
 
-     static boolean[] branchReached = new boolean[52];
+     static boolean[] branchReached = new boolean[24];
 
      public static void printVisitedBranches() {
 
           int nbBranchesCovered = 0;
           try {
-               File file = new File("branchesCoveredInGetRecipientsOfQuestion.txt");
+               File file = new File("branchesCoveredInPopulateFieldsToGenerateInQuestion.txt");
                file.createNewFile();
                PrintWriter writer = new PrintWriter(file);
                for (int i = 0; i < branchReached.length; i++) {
