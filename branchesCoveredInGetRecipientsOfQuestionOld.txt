@@ -1,0 +1,53 @@
+Reached Branch ID: 10: false (Test case added)
+What should apply: generateOptionsFor == FeedbackParticipantType.STUDENTS_IN_SAME_SECTION
+ 
+Reached Branch ID: 13: false
+What should apply: generateOptionsFor == FeedbackParticipantType.STUDENTS_IN_SAME_SECTION
+                        
+
+Reached Branch ID: 16: false
+What should apply: isInstructorGiver && !instructorGiver.isAllowedForPrivilege(
+                            student.getSection(), question.getFeedbackSessionName(),
+                            Const.InstructorPermissions.CAN_SUBMIT_SESSION_IN_SECTIONS)
+                   
+
+Reached Branch ID: 23: false
+What should apply: isStudentGiver && !instr.isDisplayedToStudents()
+ 
+
+Reached Branch ID: 27: false
+What should apply: (generateOptionsFor == FeedbackParticipantType.TEAMS_IN_SAME_SECTION) {
+                    
+
+Reached Branch ID: 32: false
+ What should apply: (isInstructorGiver && !instructorGiver.isAllowedForPrivilege(
+                            team.getValue().iterator().next().getSection(),
+                            question.getFeedbackSessionName(),
+                            Const.InstructorPermissions.CAN_SUBMIT_SESSION_IN_SECTIONS)) {
+                       
+
+Reached Branch ID: 35: false (Test case added)
+ What should apply:            case OWN_TEAM:
+ 
+
+Reached Branch ID: 40: false
+What should apply: !student.getEmail().equals(giverEmail)
+ 
+
+Reached Branch ID: 42: false (Test case added)
+    What should apply:         case OWN_TEAM_MEMBERS_INCLUDING_SELF
+
+
+Reached Branch ID: 43: false
+Reached Branch ID: 44: false
+Reached Branch ID: 45: false
+Reached Branch ID: 46: false
+What should apply:  same as ID 42 
+
+
+Reached Branch ID: 48: false
+   What should apply:          case default:
+ 
+Number of Branches Covered: 38
+Total Number of Branchs: 52
+Coverage: 0.7307692
