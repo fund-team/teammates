@@ -817,6 +817,31 @@ public class FeedbackResponsesLogicTest extends BaseLogicTest {
         assertEquals(1, bundle.getQuestionResponseMap().size());
         responseForQuestion = bundle.getQuestionResponseMap().entrySet().iterator().next().getValue();
         assertEquals(1, responseForQuestion.size());
+
+        FeedbackQuestionAttributes question2 = fqLogic.getFeedbackQuestion(
+                "First Session", "FQLogicPCT.CS2104", 2);
+
+        // Fred will see 1 response
+        bundle = frLogic.getSessionResultsForUser(
+                "First Session", "FQLogicPCT.CS2104", "FQLogicPCT.fred.g@gmail.tmt",
+                false, question2.getId());
+        assertEquals(1, bundle.getQuestionResponseMap().size());
+        responseForQuestion = bundle.getQuestionResponseMap().entrySet().iterator().next().getValue();
+        assertEquals(1, responseForQuestion.size());
+
+        FeedbackQuestionAttributes question3 = fqLogic.getFeedbackQuestion(
+                "First Session", "FQLogicPCT.CS2104", 3);
+
+        // Fred will see 1 response as part of Emily's group
+        bundle = frLogic.getSessionResultsForUser(
+                "First Session", "FQLogicPCT.CS2104", "FQLogicPCT.fred.g@gmail.tmt",
+                false, question3.getId());
+        assertEquals(1, bundle.getQuestionResponseMap().size());
+        responseForQuestion = bundle.getQuestionResponseMap().entrySet().iterator().next().getValue();
+        assertEquals(1, responseForQuestion.size());
+
+        FeedbackQuestionAttributes question4 = fqLogic.getFeedbackQuestion(
+                "First Session", "FQLogicPCT.CS2104", 4);
     }
 
     @Test

@@ -41,6 +41,13 @@
       "isInstructor": false,
       "email": "FQLogicPCT.emily.f@gmail.tmt",
       "institute": "TEAMMATES Test Institute 1"
+    },
+    "FQLogicPCT.fred.g": {
+      "googleId": "FQLogicPCT.fred.g",
+      "name": "Fred G.",
+      "isInstructor": false,
+	  "email": "FQLogicPCT.fred.g@gmail.tmt",
+      "institute": "TEAMMATES Test Institute 1"
     }
   },
   "courses": {
@@ -139,6 +146,15 @@
       "comments": "This student's name is Emily",
       "team": "Team 3",
       "section": "None"
+    },
+    "Fred": {
+      "googleId": "FQLogicPCT.fred.g",
+	  "email": "FQLogicPCT.fred.g@gmail.tmt",
+      "course": "FQLogicPCT.CS2104",
+      "name": "Fred",
+      "comments": "This student's name is Fred",
+      "team": "Team 3",
+      "section": "None"
     }
   },
   "feedbackSessions": {
@@ -186,6 +202,49 @@
       "showRecipientNameTo": [
         "RECEIVER"
       ]
+    },
+	"qn2InSession1": {
+      "feedbackSessionName": "First Session",
+      "courseId": "FQLogicPCT.CS2104",
+      "questionDetails": {
+        "questionType": "TEXT",
+        "questionText": "Give feedback to 3 other teams."
+      },
+      "questionNumber": 2,
+      "giverType": "TEAMS",
+      "recipientType": "TEAMS_IN_SAME_SECTION",
+      "numberOfEntitiesToGiveFeedbackTo": 3,
+      "showResponsesTo": [
+        "RECEIVER"
+      ],
+      "showGiverNameTo": [
+        "RECEIVER"
+      ],
+      "showRecipientNameTo": [
+        "RECEIVER"
+      ]
+    },
+    "qn3InSession1": {
+      "feedbackSessionName": "First Session",
+      "courseId": "FQLogicPCT.CS2104",
+      "questionDetails": {
+        "questionType": "TEXT",
+        "questionText": "Give feedback to one person."
+      },
+      "questionNumber": 3,
+      "giverType": "STUDENTS",
+      "recipientType": "STUDENTS",
+      "numberOfEntitiesToGiveFeedbackTo": 1,
+      "showResponsesTo": [
+        "RECEIVER_TEAM_MEMBERS",
+        "RECEIVER"
+      ],
+      "showGiverNameTo": [
+        "RECEIVER"
+      ],
+      "showRecipientNameTo": [
+        "RECEIVER"
+      ]
     }
   },
   "feedbackResponses": {
@@ -220,6 +279,28 @@
       "responseDetails": {
         "questionType": "TEXT",
         "answer": "alice to team 2"
+      }
+    },
+    "response5": {
+      "feedbackSessionName": "First Session",
+      "courseId": "FQLogicPCT.CS2104",
+      "feedbackQuestionId": "2",
+      "giver": "Team 1\"><'",
+      "recipient": "Team 3",
+      "responseDetails": {
+        "questionType": "TEXT",
+        "answer": "alice to team 3"
+      }
+    },
+    "response6": {
+      "feedbackSessionName": "First Session",
+      "courseId": "FQLogicPCT.CS2104",
+      "feedbackQuestionId": "3",
+      "giver": "FQLogicPCT.alice.b@gmail.tmt",
+      "recipient": "FQLogicPCT.emily.f@gmail.tmt",
+      "responseDetails": {
+        "questionType": "TEXT",
+        "answer": "Alice to Emily"
       }
     }
   },
