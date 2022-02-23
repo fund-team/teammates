@@ -135,6 +135,13 @@ public class FeedbackQuestionsLogicTest extends BaseLogicTest {
         recipients = fqLogic.getRecipientsForQuestion(question, email);
         assertEquals(recipients.size(), 0);
 
+        ______TS("response to students in same section but different teams, total 1");
+
+        question = getQuestionFromDatabase("team.same.section.course6.feedback");
+        email = dataBundle.students.get("student1InCourse6").getEmail();
+        recipients = fqLogic.getRecipientsForQuestion(question, email);
+        assertEquals(recipients.size(), 1);
+
         ______TS("response from team to itself");
 
         question = getQuestionFromDatabase("graceperiod.session.feedbackFromTeamToSelf");
