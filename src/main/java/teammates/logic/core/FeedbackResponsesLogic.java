@@ -617,51 +617,97 @@ public final class FeedbackResponsesLogic {
             FeedbackQuestionAttributes relatedQuestion, InstructorAttributes instructor) {
 
         boolean isVisibleResponse = false;
-        if (isInstructor && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.INSTRUCTORS)
-                || response.getRecipient().equals(userEmail)
-                && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER)
-                || response.getGiver().equals(userEmail)
-                || !isInstructor && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.STUDENTS)) {
+
+        // If instructor then first inspect if privileges to access the giver and recipient sections
+        if (instructor != null
+                && isNotAllowedForInstructor(instructor, response, relatedQuestion)) {
+            return isVisibleResponse;
+        }
+
+        if (userPartOfInstructors(isInstructor, relatedQuestion)
+                || userIsTheRecipient(userEmail, relatedQuestion, response)
+                || userIsTheGiver(userEmail, response)
+                || userPartOfStudents(isInstructor, relatedQuestion)) {
             isVisibleResponse = true;
         } else if (studentsEmailInTeam != null && !isInstructor) {
-            if (relatedQuestion.getRecipientType() == FeedbackParticipantType.TEAMS
-                    && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER)
-                    && response.getRecipient().equals(student.getTeam())) {
+            if (userPartOfRecipientTeam(student, relatedQuestion, response)
+                    || userPartOfGiverTeam(student, relatedQuestion, response)
+                    || userPartOfTeamOfTheGiver(studentsEmailInTeam, relatedQuestion, response)
+                    || userPartOfTeamOfTheRecipient(studentsEmailInTeam, relatedQuestion, response)) {
                 isVisibleResponse = true;
-            } else if (relatedQuestion.getRecipientType() == FeedbackParticipantType.TEAMS_IN_SAME_SECTION
-                    && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER)
-                    && response.getRecipient().equals(student.getTeam())) {
-                isVisibleResponse = true;
-            } else if (relatedQuestion.getGiverType() == FeedbackParticipantType.TEAMS
-                    && response.getGiver().equals(student.getTeam())) {
-                isVisibleResponse = true;
-            } else if (relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.OWN_TEAM_MEMBERS)
-                    && studentsEmailInTeam.contains(response.getGiver())) {
-                isVisibleResponse = true;
-            } else if (relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER_TEAM_MEMBERS)
-                    && studentsEmailInTeam.contains(response.getRecipient())) {
-                isVisibleResponse = true;
-            }
-        }
-        if (isVisibleResponse && instructor != null) {
-            boolean isGiverSectionRestricted =
-                    !instructor.isAllowedForPrivilege(response.getGiverSection(),
-                            response.getFeedbackSessionName(),
-                            Const.InstructorPermissions.CAN_VIEW_SESSION_IN_SECTIONS);
-            // If instructors are not restricted to view the giver's section,
-            // they are allowed to view responses to GENERAL, subject to visibility options
-            boolean isRecipientSectionRestricted =
-                    relatedQuestion.getRecipientType() != FeedbackParticipantType.NONE
-                            && !instructor.isAllowedForPrivilege(response.getRecipientSection(),
-                            response.getFeedbackSessionName(),
-                            Const.InstructorPermissions.CAN_VIEW_SESSION_IN_SECTIONS);
-
-            boolean isNotAllowedForInstructor = isGiverSectionRestricted || isRecipientSectionRestricted;
-            if (isNotAllowedForInstructor) {
-                isVisibleResponse = false;
             }
         }
         return isVisibleResponse;
+    }
+
+    private boolean isNotAllowedForInstructor(InstructorAttributes instructor,
+                                              FeedbackResponseAttributes response,
+                                              FeedbackQuestionAttributes relatedQuestion) {
+        boolean isGiverSectionRestricted =
+                !instructor.isAllowedForPrivilege(response.getGiverSection(),
+                        response.getFeedbackSessionName(),
+                        Const.InstructorPermissions.CAN_VIEW_SESSION_IN_SECTIONS);
+
+        boolean isRecipientSectionRestricted =
+                relatedQuestion.getRecipientType() != FeedbackParticipantType.NONE
+                        && !instructor.isAllowedForPrivilege(response.getRecipientSection(),
+                        response.getFeedbackSessionName(),
+                        Const.InstructorPermissions.CAN_VIEW_SESSION_IN_SECTIONS);
+
+        return isGiverSectionRestricted || isRecipientSectionRestricted;
+    }
+
+    private boolean userPartOfInstructors (boolean isInstructor,
+                                          FeedbackQuestionAttributes relatedQuestion) {
+        return isInstructor && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.INSTRUCTORS);
+    }
+
+    private boolean userPartOfStudents(boolean isInstructor,
+                                       FeedbackQuestionAttributes relatedQuestion) {
+        return !isInstructor && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.STUDENTS);
+    }
+
+    private boolean userIsTheRecipient (String userEmail,
+                                        FeedbackQuestionAttributes relatedQuestion,
+                                        FeedbackResponseAttributes response) {
+        return response.getRecipient().equals(userEmail)
+                && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER);
+    }
+
+    private boolean userIsTheGiver (String userEmail,
+                                   FeedbackResponseAttributes response) {
+        return response.getGiver().equals(userEmail);
+    }
+
+    private boolean userPartOfRecipientTeam (StudentAttributes student,
+                                             FeedbackQuestionAttributes relatedQuestion,
+                                             FeedbackResponseAttributes response) {
+        boolean teamsAllOrInSameSection = relatedQuestion.getRecipientType() == FeedbackParticipantType.TEAMS
+                                       || relatedQuestion.getRecipientType() == FeedbackParticipantType.TEAMS_IN_SAME_SECTION;
+        return teamsAllOrInSameSection
+                && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER)
+                && response.getRecipient().equals(student.getTeam());
+    }
+
+    private boolean userPartOfGiverTeam (StudentAttributes student,
+                                         FeedbackQuestionAttributes relatedQuestion,
+                                         FeedbackResponseAttributes response) {
+        return relatedQuestion.getGiverType() == FeedbackParticipantType.TEAMS
+                && response.getGiver().equals(student.getTeam());
+    }
+
+    private boolean userPartOfTeamOfTheGiver (Set<String> studentsEmailInTeam,
+                                              FeedbackQuestionAttributes relatedQuestion,
+                                              FeedbackResponseAttributes response) {
+        return relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.OWN_TEAM_MEMBERS)
+                && studentsEmailInTeam.contains(response.getGiver());
+    }
+
+    private boolean userPartOfTeamOfTheRecipient (Set<String> studentsEmailInTeam,
+                                                 FeedbackQuestionAttributes relatedQuestion,
+                                                 FeedbackResponseAttributes response) {
+        return relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER_TEAM_MEMBERS)
+                && studentsEmailInTeam.contains(response.getRecipient());
     }
 
     /**
