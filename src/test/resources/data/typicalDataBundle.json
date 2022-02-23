@@ -725,6 +725,15 @@
       "team": "Team 1.1</td></div>'\"",
       "section": "Section 1"
     },
+    "student1InCourse5": {
+      "googleId": "student1InCourse5",
+      "email": "student1InCourse5@gmail.tmt",
+      "course": "idOfTypicalCourse5",
+      "name": "student1 In Course5",
+      "comments": "",
+      "team": "Team 1.1</td></div>'\"",
+      "section": "Section 1"
+    },
     "student1InUnregisteredCourse": {
       "googleId": "",
       "email": "student1InUnregisteredCourse@gmail.tmt",
@@ -1198,6 +1207,48 @@
       "questionNumber": 2,
       "giverType": "STUDENTS",
       "recipientType": "OWN_TEAM_MEMBERS",
+      "numberOfEntitiesToGiveFeedbackTo": 1,
+      "showResponsesTo": [
+        "RECEIVER"
+      ],
+      "showGiverNameTo": [
+        "RECEIVER"
+      ],
+      "showRecipientNameTo": [
+        "RECEIVER"
+      ]
+    },
+    "own.team.feedback": {
+      "feedbackSessionName": "Second feedback session",
+      "courseId": "idOfTypicalCourse5",
+      "questionDetails": {
+        "questionType": "TEXT",
+        "questionText": "Give feedback to 1 of your team mates"
+      },
+      "questionNumber": 4,
+      "giverType": "STUDENTS",
+      "recipientType": "OWN_TEAM",
+      "numberOfEntitiesToGiveFeedbackTo": 1,
+      "showResponsesTo": [
+        "RECEIVER"
+      ],
+      "showGiverNameTo": [
+        "RECEIVER"
+      ],
+      "showRecipientNameTo": [
+        "RECEIVER"
+      ]
+    },
+    "team.same.section.feedback": {
+      "feedbackSessionName": "Second feedback session",
+      "courseId": "idOfTypicalCourse4",
+      "questionDetails": {
+        "questionType": "TEXT",
+        "questionText": "Give feedback to 1 of your team mates"
+      },
+      "questionNumber": 4,
+      "giverType": "STUDENTS",
+      "recipientType": "TEAMS_IN_SAME_SECTION",
       "numberOfEntitiesToGiveFeedbackTo": 1,
       "showResponsesTo": [
         "RECEIVER"
