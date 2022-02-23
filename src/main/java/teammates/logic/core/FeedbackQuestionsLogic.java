@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
@@ -604,8 +605,8 @@ public final class FeedbackQuestionsLogic {
      */
     public void populateFieldsToGenerateInQuestion(FeedbackQuestionAttributes feedbackQuestionAttributes,
             String emailOfEntityDoingQuestion, String teamOfEntityDoingQuestion) {
-        List<String> optionList;
 
+        List<String> optionList;
         FeedbackParticipantType generateOptionsFor;
 
         if (feedbackQuestionAttributes.getQuestionType() == FeedbackQuestionType.MCQ) {
@@ -613,65 +614,70 @@ public final class FeedbackQuestionsLogic {
                     .getQuestionDetailsCopy();
             optionList = feedbackMcqQuestionDetails.getMcqChoices();
             generateOptionsFor = feedbackMcqQuestionDetails.getGenerateOptionsFor();
+            populateOptionsList(generateOptionsFor, optionList, feedbackQuestionAttributes, emailOfEntityDoingQuestion,
+                    teamOfEntityDoingQuestion);
+            feedbackMcqQuestionDetails.setMcqChoices(optionList);
+            feedbackQuestionAttributes.setQuestionDetails(feedbackMcqQuestionDetails);
         } else if (feedbackQuestionAttributes.getQuestionType() == FeedbackQuestionType.MSQ) {
             FeedbackMsqQuestionDetails feedbackMsqQuestionDetails = (FeedbackMsqQuestionDetails) feedbackQuestionAttributes
                     .getQuestionDetailsCopy();
             optionList = feedbackMsqQuestionDetails.getMsqChoices();
             generateOptionsFor = feedbackMsqQuestionDetails.getGenerateOptionsFor();
-        } else {
-            // other question types
-            return;
+            populateOptionsList(generateOptionsFor, optionList, feedbackQuestionAttributes, emailOfEntityDoingQuestion,
+                    teamOfEntityDoingQuestion);
+            feedbackMsqQuestionDetails.setMsqChoices(optionList);
+            feedbackQuestionAttributes.setQuestionDetails(feedbackMsqQuestionDetails);
         }
+    }
 
+    private void populateOptionsList(FeedbackParticipantType generateOptionsFor, List<String> optionList,
+            FeedbackQuestionAttributes feedbackQuestionAttributes,
+            String emailOfEntityDoingQuestion, String teamOfEntityDoingQuestion) {
+        Stream<String> optionsStream = Stream.empty();
         switch (generateOptionsFor) {
             case NONE:
-                break;
+                return;
             case STUDENTS:
             case STUDENTS_IN_SAME_SECTION:
             case STUDENTS_EXCLUDING_SELF:
-                List<StudentAttributes> studentList;
+                Stream<StudentAttributes> students;
                 if (generateOptionsFor == FeedbackParticipantType.STUDENTS_IN_SAME_SECTION) {
                     String courseId = feedbackQuestionAttributes.getCourseId();
                     StudentAttributes studentAttributes = studentsLogic.getStudentForEmail(emailOfEntityDoingQuestion,
                             courseId);
-                    studentList = studentsLogic.getStudentsForSection(studentAttributes.getSection(), courseId);
+                    students = studentsLogic.getStudentsForSection(studentAttributes.getSection(), courseId)
+                            .stream();
                 } else {
-                    studentList = studentsLogic.getStudentsForCourse(feedbackQuestionAttributes.getCourseId());
+                    students = studentsLogic.getStudentsForCourse(feedbackQuestionAttributes.getCourseId()).stream();
                 }
 
                 if (generateOptionsFor == FeedbackParticipantType.STUDENTS_EXCLUDING_SELF) {
-                    studentList.removeIf(studentInList -> studentInList.getEmail().equals(emailOfEntityDoingQuestion));
+                    students = students
+                            .filter(studentInList -> !studentInList.getEmail().equals(emailOfEntityDoingQuestion));
                 }
 
-                for (StudentAttributes student : studentList) {
-                    optionList.add(student.getName() + " (" + student.getTeam() + ")");
-                }
+                optionsStream = students.map(student -> student.getName() + " (" + student.getTeam() + ")");
 
-                optionList.sort(null);
                 break;
             case TEAMS:
             case TEAMS_IN_SAME_SECTION:
             case TEAMS_EXCLUDING_SELF:
                 try {
-                    List<String> teams;
+                    Stream<String> teams;
                     if (generateOptionsFor == FeedbackParticipantType.TEAMS_IN_SAME_SECTION) {
                         String courseId = feedbackQuestionAttributes.getCourseId();
                         StudentAttributes studentAttributes = studentsLogic
                                 .getStudentForEmail(emailOfEntityDoingQuestion, courseId);
-                        teams = coursesLogic.getTeamsForSection(studentAttributes.getSection(), courseId);
+                        teams = coursesLogic.getTeamsForSection(studentAttributes.getSection(), courseId).stream();
                     } else {
-                        teams = coursesLogic.getTeamsForCourse(feedbackQuestionAttributes.getCourseId());
+                        teams = coursesLogic.getTeamsForCourse(feedbackQuestionAttributes.getCourseId()).stream();
                     }
 
                     if (generateOptionsFor == FeedbackParticipantType.TEAMS_EXCLUDING_SELF) {
-                        teams.removeIf(team -> team.equals(teamOfEntityDoingQuestion));
+                        teams = teams.filter(team -> !team.equals(teamOfEntityDoingQuestion));
                     }
 
-                    for (String team : teams) {
-                        optionList.add(team);
-                    }
-
-                    optionList.sort(null);
+                    optionsStream = teams;
                 } catch (EntityDoesNotExistException e) {
                     assert false : "Course disappeared";
                 }
@@ -679,44 +685,30 @@ public final class FeedbackQuestionsLogic {
             case OWN_TEAM_MEMBERS_INCLUDING_SELF:
             case OWN_TEAM_MEMBERS:
                 if (teamOfEntityDoingQuestion != null) {
-                    List<StudentAttributes> teamMembers = studentsLogic.getStudentsForTeam(teamOfEntityDoingQuestion,
-                            feedbackQuestionAttributes.getCourseId());
+                    Stream<StudentAttributes> teamMembers = studentsLogic.getStudentsForTeam(teamOfEntityDoingQuestion,
+                            feedbackQuestionAttributes.getCourseId()).stream();
 
                     if (generateOptionsFor == FeedbackParticipantType.OWN_TEAM_MEMBERS) {
-                        teamMembers.removeIf(teamMember -> teamMember.getEmail().equals(emailOfEntityDoingQuestion));
+                        teamMembers = teamMembers
+                                .filter(teamMember -> !teamMember.getEmail().equals(emailOfEntityDoingQuestion));
                     }
 
-                    teamMembers.forEach(teamMember -> optionList.add(teamMember.getName()));
-
-                    optionList.sort(null);
+                    optionsStream = teamMembers.map(member -> member.getName());
                 }
                 break;
             case INSTRUCTORS:
-                List<InstructorAttributes> instructorList = instructorsLogic
-                        .getInstructorsForCourse(feedbackQuestionAttributes.getCourseId());
+                Stream<InstructorAttributes> instructors = instructorsLogic
+                        .getInstructorsForCourse(feedbackQuestionAttributes.getCourseId()).stream();
 
-                for (InstructorAttributes instructor : instructorList) {
-                    optionList.add(instructor.getName());
-                }
+                optionsStream = instructors.map(instructor -> instructor.getName());
 
-                optionList.sort(null);
                 break;
             default:
                 assert false : "Trying to generate options for neither students, teams nor instructors";
                 break;
         }
-
-        if (feedbackQuestionAttributes.getQuestionType() == FeedbackQuestionType.MCQ) {
-            FeedbackMcqQuestionDetails feedbackMcqQuestionDetails = (FeedbackMcqQuestionDetails) feedbackQuestionAttributes
-                    .getQuestionDetailsCopy();
-            feedbackMcqQuestionDetails.setMcqChoices(optionList);
-            feedbackQuestionAttributes.setQuestionDetails(feedbackMcqQuestionDetails);
-        } else if (feedbackQuestionAttributes.getQuestionType() == FeedbackQuestionType.MSQ) {
-            FeedbackMsqQuestionDetails feedbackMsqQuestionDetails = (FeedbackMsqQuestionDetails) feedbackQuestionAttributes
-                    .getQuestionDetailsCopy();
-            feedbackMsqQuestionDetails.setMsqChoices(optionList);
-            feedbackQuestionAttributes.setQuestionDetails(feedbackMsqQuestionDetails);
-        }
+        optionList.addAll(optionsStream.collect(Collectors.toList()));
+        optionList.sort(null);
     }
 
     private String getGiverSection(String defaultSection, InstructorAttributes instructorGiver,
