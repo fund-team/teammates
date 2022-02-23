@@ -693,8 +693,14 @@ public final class FeedbackQuestionsLogic {
                 if (generateOptionsFor == FeedbackParticipantType.STUDENTS_IN_SAME_SECTION) {
                     CommonData.branchReached[6] = true;
                     String courseId = feedbackQuestionAttributes.getCourseId();
-                    StudentAttributes studentAttributes = studentsLogic.getStudentForEmail(emailOfEntityDoingQuestion,
-                            courseId);
+                    // Old line
+                    /*
+                     * StudentAttributes studentAttributes =
+                     * studentsLogic.getStudentForEmail(emailOfEntityDoingQuestion,
+                     * courseId);
+                     */
+                    StudentAttributes studentAttributes = studentsLogic.getStudentForEmail(courseId,
+                            emailOfEntityDoingQuestion);
                     studentList = studentsLogic.getStudentsForSection(studentAttributes.getSection(), courseId);
                 } else {
                     CommonData.branchReached[7] = true;
@@ -722,8 +728,12 @@ public final class FeedbackQuestionsLogic {
                     if (generateOptionsFor == FeedbackParticipantType.TEAMS_IN_SAME_SECTION) {
                         CommonData.branchReached[11] = true;
                         String courseId = feedbackQuestionAttributes.getCourseId();
-                        StudentAttributes studentAttributes = studentsLogic
-                                .getStudentForEmail(emailOfEntityDoingQuestion, courseId);
+                        /*
+                         * StudentAttributes studentAttributes = studentsLogic
+                         * .getStudentForEmail(emailOfEntityDoingQuestion, courseId);
+                         */
+                        StudentAttributes studentAttributes = studentsLogic.getStudentForEmail(courseId,
+                                emailOfEntityDoingQuestion);
                         teams = coursesLogic.getTeamsForSection(studentAttributes.getSection(), courseId);
                     } else {
                         CommonData.branchReached[12] = true;
