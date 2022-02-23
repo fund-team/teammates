@@ -730,6 +730,26 @@ public class FeedbackQuestionsLogicTest extends BaseLogicTest {
                 fqLogic.populateFieldsToGenerateInQuestion(fqa, typicalInstructor.getEmail(), null);
                 assertEquals(expected, ((FeedbackMcqQuestionDetails) fqa.getQuestionDetailsCopy()).getMcqChoices());
 
+                // STUDENTS_IN_SAME_SECTION
+                expected = Arrays.asList("student1 In Course1</td></div>'\" (Team 1.1</td></div>'\")",
+                                "student2 In Course1 (Team 1.1</td></div>'\")",
+                                "student3 In Course1 (Team 1.1</td></div>'\")",
+                                "student4 In Course1 (Team 1.1</td></div>'\")");
+
+                feedbackMcqQuestionDetails.setMcqChoices(new ArrayList<>());
+                feedbackMcqQuestionDetails.setGenerateOptionsFor(FeedbackParticipantType.STUDENTS_IN_SAME_SECTION);
+                fqa.setQuestionDetails(feedbackMcqQuestionDetails);
+
+                fqLogic.populateFieldsToGenerateInQuestion(fqa, typicalStudent.getEmail(), typicalStudent.getTeam());
+                assertEquals(expected, ((FeedbackMcqQuestionDetails) fqa.getQuestionDetailsCopy()).getMcqChoices());
+
+                feedbackMcqQuestionDetails.setMcqChoices(new ArrayList<>());
+                feedbackMcqQuestionDetails.setGenerateOptionsFor(FeedbackParticipantType.STUDENTS_IN_SAME_SECTION);
+                fqa.setQuestionDetails(feedbackMcqQuestionDetails);
+
+                fqLogic.populateFieldsToGenerateInQuestion(fqa, typicalStudent.getEmail(), null);
+                assertEquals(expected, ((FeedbackMcqQuestionDetails) fqa.getQuestionDetailsCopy()).getMcqChoices());
+
                 // STUDENTS_EXCLUDING_SELF
                 feedbackMcqQuestionDetails.setMcqChoices(new ArrayList<>());
                 feedbackMcqQuestionDetails.setGenerateOptionsFor(FeedbackParticipantType.STUDENTS_EXCLUDING_SELF);
@@ -810,6 +830,23 @@ public class FeedbackQuestionsLogicTest extends BaseLogicTest {
                 fqa.setQuestionDetails(feedbackMcqQuestionDetails);
 
                 fqLogic.populateFieldsToGenerateInQuestion(fqa, typicalInstructor.getEmail(), null);
+                assertEquals(expected, ((FeedbackMcqQuestionDetails) fqa.getQuestionDetailsCopy()).getMcqChoices());
+
+                // TEAMS_IN_SAME_SECTION
+                expected = Arrays.asList("Team 1.1</td></div>'\"");
+
+                feedbackMcqQuestionDetails.setMcqChoices(new ArrayList<>());
+                feedbackMcqQuestionDetails.setGenerateOptionsFor(FeedbackParticipantType.TEAMS_IN_SAME_SECTION);
+                fqa.setQuestionDetails(feedbackMcqQuestionDetails);
+
+                fqLogic.populateFieldsToGenerateInQuestion(fqa, typicalStudent.getEmail(), typicalStudent.getTeam());
+                assertEquals(expected, ((FeedbackMcqQuestionDetails) fqa.getQuestionDetailsCopy()).getMcqChoices());
+
+                feedbackMcqQuestionDetails.setMcqChoices(new ArrayList<>());
+                feedbackMcqQuestionDetails.setGenerateOptionsFor(FeedbackParticipantType.TEAMS_IN_SAME_SECTION);
+                fqa.setQuestionDetails(feedbackMcqQuestionDetails);
+
+                fqLogic.populateFieldsToGenerateInQuestion(fqa, typicalStudent.getEmail(), null);
                 assertEquals(expected, ((FeedbackMcqQuestionDetails) fqa.getQuestionDetailsCopy()).getMcqChoices());
 
                 // TEAMS_EXCLUDING_SELF

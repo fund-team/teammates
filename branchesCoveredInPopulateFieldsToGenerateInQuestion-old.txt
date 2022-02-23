@@ -1,27 +1,45 @@
 Reached Branch ID: 0: true
 Reached Branch ID: 1: true
 Reached Branch ID: 2: true
+
 Reached Branch ID: 3: false
+QuestionType -> else
+
 Reached Branch ID: 4: true
 Reached Branch ID: 5: true
-Reached Branch ID: 6: true
+
+Reached Branch ID: 6: false
+FeedbackParticipantType STUDENTS_IN_SAME_SECTION
+
 Reached Branch ID: 7: true
 Reached Branch ID: 8: true
 Reached Branch ID: 9: true
 Reached Branch ID: 10: true
-Reached Branch ID: 11: true
+
+Reached Branch ID: 11: false
+FeedbackParticipantType TEAMS_IN_SAME_SECTION
+
 Reached Branch ID: 12: true
 Reached Branch ID: 13: true
 Reached Branch ID: 14: true
+
 Reached Branch ID: 15: false
+catch EntityDoesNotExistException
+
 Reached Branch ID: 16: true
 Reached Branch ID: 17: true
 Reached Branch ID: 18: true
 Reached Branch ID: 19: true
 Reached Branch ID: 20: true
+
 Reached Branch ID: 21: false
+default case
+
 Reached Branch ID: 22: true
 Reached Branch ID: 23: true
-Number of Branches Covered: 21
+Number of Branches Covered: 19
 Total Number of Branchs: 24
-Coverage: 0.875
+Coverage: 0.7916667
+
+Additional from codecov:
+704 else
