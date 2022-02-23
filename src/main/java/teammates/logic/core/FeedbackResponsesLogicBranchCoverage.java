@@ -20,9 +20,11 @@ public class FeedbackResponsesLogicBranchCoverage {
             file.createNewFile();
             PrintWriter writer = new PrintWriter(file);
             for (int i=0; i<branchesCovered.length; i++) {
-                if (branchesCovered[i]!= null && branchesCovered[i]) {
-                    writer.println(i);
+                if (branchesCovered[i] != null && branchesCovered[i]) {
+                    writer.println("Branch "+i+": True");
                     nbBranchesCovered += 1;
+                } else {
+                    writer.println("Branch "+i+": False");
                 }
             }
             writer.println("Coverage: "+(float) nbBranchesCovered/branchesCovered.length);
