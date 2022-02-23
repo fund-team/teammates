@@ -309,6 +309,33 @@ public final class FeedbackQuestionsLogic {
                 }
             }
             break;
+        default:
+            recipients = getRecipientsForQuestionContinuation(question, giver);
+        }
+
+        GetRecipientsForQuestionsBranchCoverage.writeListBranchesCoveredInFile();
+
+        return recipients;
+    }
+
+    /**
+     * Continuation of getRecipientsForQuestion. Only used to demonstrate a reduction in cyclomatic complexity of the method
+     */
+    Map<String, String> getRecipientsForQuestionContinuation(FeedbackQuestionAttributes question, String giver)
+            throws EntityDoesNotExistException {
+
+        InstructorAttributes instructorGiver = instructorsLogic.getInstructorForEmail(question.getCourseId(), giver);
+        StudentAttributes studentGiver = studentsLogic.getStudentForEmail(question.getCourseId(), giver);
+
+        Map<String, String> recipients = new HashMap<>();
+
+        FeedbackParticipantType recipientType = question.getRecipientType();
+
+        String giverTeam = getGiverTeam(giver, instructorGiver, studentGiver);
+
+        String giverSection = getGiverSection(giver, instructorGiver, studentGiver);
+        
+        switch (recipientType) {
         case TEAMS:
             // Branch 11
             GetRecipientsForQuestionsBranchCoverage.changeBranchState(11);
@@ -381,8 +408,6 @@ public final class FeedbackQuestionsLogic {
             GetRecipientsForQuestionsBranchCoverage.changeBranchState(24);
             break;
         }
-
-        GetRecipientsForQuestionsBranchCoverage.writeListBranchesCoveredInFile();
 
         return recipients;
     }
