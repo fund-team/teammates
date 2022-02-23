@@ -1,0 +1,27 @@
+Reached Branch 0: true
+Reached Branch 1: true
+Reached Branch 2: true
+Reached Branch 3: true
+Reached Branch 4: true
+Reached Branch 5: false
+Reached Branch 6: false
+Reached Branch 7: false
+Reached Branch 8: true
+Reached Branch 9: true
+Reached Branch 10: true
+Reached Branch 11: true
+Reached Branch 12: true
+Reached Branch 13: true
+Reached Branch 14: true
+Reached Branch 15: true
+Reached Branch 16: true
+Reached Branch 17: true
+Reached Branch 18: true
+Reached Branch 19: true
+Reached Branch 20: true
+Reached Branch 21: false
+Reached Branch 22: false
+Reached Branch 23: true
+Number of branches covered: 19
+Total number of branches: 24
+Coverage: 0.7916667

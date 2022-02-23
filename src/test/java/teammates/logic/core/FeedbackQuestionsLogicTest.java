@@ -114,6 +114,34 @@ public class FeedbackQuestionsLogicTest extends BaseLogicTest {
         recipients = fqLogic.getRecipientsForQuestion(question, email);
         assertEquals(recipients.size(), 0);
 
+        ______TS("response to own team members, total 3");
+
+        question = getQuestionFromDatabase("team.members.feedback");
+        email = dataBundle.students.get("student4InCourse1").getEmail();
+        recipients = fqLogic.getRecipientsForQuestion(question, email);
+        assertEquals(recipients.size(), 3);
+
+        ______TS("response to own team, total 1");
+
+        question = getQuestionFromDatabase("own.team.feedback");
+        email = dataBundle.students.get("student1InCourse5").getEmail();
+        recipients = fqLogic.getRecipientsForQuestion(question, email);
+        assertEquals(recipients.size(), 1);
+
+        ______TS("response to team in same section, total 0");
+
+        question = getQuestionFromDatabase("team.same.section.feedback");
+        email = dataBundle.students.get("student1InCourse5").getEmail();
+        recipients = fqLogic.getRecipientsForQuestion(question, email);
+        assertEquals(recipients.size(), 0);
+
+        ______TS("response to students in same section but different teams, total 1");
+
+        question = getQuestionFromDatabase("team.same.section.course6.feedback");
+        email = dataBundle.students.get("student1InCourse6").getEmail();
+        recipients = fqLogic.getRecipientsForQuestion(question, email);
+        assertEquals(recipients.size(), 1);
+
         ______TS("response from team to itself");
 
         question = getQuestionFromDatabase("graceperiod.session.feedbackFromTeamToSelf");
@@ -170,7 +198,7 @@ public class FeedbackQuestionsLogicTest extends BaseLogicTest {
                 instructorsLogic.getInstructorsForCourse(studentGiver.getCourse()));
 
         recipients = fqLogic.getRecipientsOfQuestion(question, null, studentGiver, null);
-        assertEquals(recipients.size(), 4); // 5 students minus giver himself
+                assertEquals(recipients.size(), 4); // 5 students minus giver himself
         recipients = fqLogic.getRecipientsOfQuestion(question, null, studentGiver, courseRoster);
         assertEquals(recipients.size(), 4); // should produce the same answer
 
@@ -787,7 +815,7 @@ public class FeedbackQuestionsLogicTest extends BaseLogicTest {
 
         feedbackMcqQuestionDetails.setMcqChoices(new ArrayList<>());
         feedbackMcqQuestionDetails.setGenerateOptionsFor(FeedbackParticipantType.TEAMS);
-        fqa.setQuestionDetails(feedbackMcqQuestionDetails);
+                fqa.setQuestionDetails(feedbackMcqQuestionDetails);
 
         fqLogic.populateFieldsToGenerateInQuestion(fqa, typicalInstructor.getEmail(), null);
         assertEquals(expected, ((FeedbackMcqQuestionDetails) fqa.getQuestionDetailsCopy()).getMcqChoices());
@@ -848,7 +876,7 @@ public class FeedbackQuestionsLogicTest extends BaseLogicTest {
                 .withRecipientType(FeedbackParticipantType.STUDENTS)
                 .withQuestionDetails(new FeedbackMsqQuestionDetails())
                 .withShowResponsesTo(new ArrayList<>())
-                .withShowGiverNameTo(new ArrayList<>())
+                         .withShowGiverNameTo(new ArrayList<>())
                 .withShowRecipientNameTo(new ArrayList<>())
                 .build();
 
@@ -978,9 +1006,9 @@ public class FeedbackQuestionsLogicTest extends BaseLogicTest {
 
         assertEquals(actualQuestions, expectedQuestions);
 
-        ______TS("Get questions created for instructors by the creating instructor");
+                ______TS("Get questions created for instructors by the creating instructor");
 
-        expectedQuestions = new ArrayList<>();
+                expectedQuestions = new ArrayList<>();
         expectedQuestions.add(getQuestionFromDatabase("qn1InSession1InCourse2"));
         expectedQuestions.add(getQuestionFromDatabase("qn2InSession1InCourse2"));
 
