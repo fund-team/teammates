@@ -617,50 +617,290 @@ public final class FeedbackResponsesLogic {
             FeedbackQuestionAttributes relatedQuestion, InstructorAttributes instructor) {
 
         boolean isVisibleResponse = false;
-        if (isInstructor && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.INSTRUCTORS)
+
+        boolean firstIf = false;
+
+        boolean A = isInstructor;
+        boolean B = relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.INSTRUCTORS);
+        boolean C = response.getRecipient().equals(userEmail);
+        boolean D = relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER);
+        boolean E = response.getGiver().equals(userEmail);
+        boolean F = !isInstructor;
+        boolean G = relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.STUDENTS);
+
+        //Branches 0 to 11
+        if (A && B) {
+            FeedbackResponsesLogicBranchCoverage.changeBranchState(0);
+            FeedbackResponsesLogicBranchCoverage.changeBranchState(2);
+            firstIf = true;
+        } else {
+            //Branches 0 1
+            if (A) {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(0);
+            } else {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(1);
+            }
+            //Branches 2 3
+            if (B) {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(2);
+            } else {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(3);
+            }
+            if (C && D) {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(4);
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(6);
+                firstIf = true;
+            } else {
+                //Branches 4 5
+                if (C) {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(4);
+                } else {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(5);
+                }
+                //Branches 6 7
+                if (D) {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(6);
+                } else {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(7);
+                }
+                //Branches 8 9
+                if (E) {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(8);
+                    firstIf = true;
+                } else {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(9);
+                    //Branches 10 11
+                    if (F && G) {
+                        FeedbackResponsesLogicBranchCoverage.changeBranchState(10);
+                        firstIf = true;
+                    } else {
+                        FeedbackResponsesLogicBranchCoverage.changeBranchState(11);
+                    }
+                }
+            }
+        }
+
+        //Branches 12 to 15
+        if (!firstIf) {
+            if (studentsEmailInTeam != null) {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(12);
+                if (!isInstructor) {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(14);
+                } else {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(15);
+                }
+            } else {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(13);
+            }
+        }
+
+        // Original code
+        if (isInstructor && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.INSTRUCTORS) // Branches 0 to 3
+                // Branches 4 5
                 || response.getRecipient().equals(userEmail)
+                // Branches 6 7
                 && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER)
+                // Branches 8 9
                 || response.getGiver().equals(userEmail)
+                // Branches 10 11
                 || !isInstructor && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.STUDENTS)) {
             isVisibleResponse = true;
-        } else if (studentsEmailInTeam != null && !isInstructor) {
-            if (relatedQuestion.getRecipientType() == FeedbackParticipantType.TEAMS
-                    && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER)
-                    && response.getRecipient().equals(student.getTeam())) {
+        } else if (studentsEmailInTeam != null && !isInstructor) { // Branches 12 to 15
+            Boolean if1 = false, if2 = false, if3 = false, if4 = false;
+            //Branches 16 to 21
+            //Branches 16 17
+            if (relatedQuestion.getRecipientType() == FeedbackParticipantType.TEAMS) {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(16);
+                //Branches 18 19
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(18);
+                if(relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER)) {
+                    //Branches 20 21
+                    if (response.getRecipient().equals(student.getTeam())) {
+                        FeedbackResponsesLogicBranchCoverage.changeBranchState(20);
+                        if1 = true;
+                    } else {
+                        FeedbackResponsesLogicBranchCoverage.changeBranchState(21);
+                    }
+                } else {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(19);
+                }
+            } else {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(17);
+            }
+
+            //Branches 22 to 39
+            if (!if1) {
+                //Branches 22 to 27
+                //Branches 22 23
+                if (relatedQuestion.getRecipientType() == FeedbackParticipantType.TEAMS_IN_SAME_SECTION) {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(22);
+                    if (relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER)) {
+                        FeedbackResponsesLogicBranchCoverage.changeBranchState(24);
+                        if (response.getRecipient().equals(student.getTeam())) {
+                            FeedbackResponsesLogicBranchCoverage.changeBranchState(26);
+                            if2 = true;
+                        } else {
+                            FeedbackResponsesLogicBranchCoverage.changeBranchState(27);
+                        }
+                    } else {
+                        FeedbackResponsesLogicBranchCoverage.changeBranchState(25);
+                    }
+                } else {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(23);
+                }
+
+                if (!if2) {
+                    //Branches 28 to 31
+                    //Branches 28 29
+                    if (relatedQuestion.getGiverType() == FeedbackParticipantType.TEAMS) {
+                        FeedbackResponsesLogicBranchCoverage.changeBranchState(28);
+                        //Branches 30 31
+                        if (response.getGiver().equals(student.getTeam())) {
+                            FeedbackResponsesLogicBranchCoverage.changeBranchState(30);
+                            if3 = true;
+                        } else {
+                            FeedbackResponsesLogicBranchCoverage.changeBranchState(31);
+                        }
+                    } else {
+                        FeedbackResponsesLogicBranchCoverage.changeBranchState(29);
+                    }
+
+                    if (!if3) {
+                        //Branches 32 to 35
+                        //Branches 32 33
+                        if (relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.OWN_TEAM_MEMBERS)) {
+                            FeedbackResponsesLogicBranchCoverage.changeBranchState(32);
+                            //Branches 34 35
+                            if (studentsEmailInTeam.contains(response.getGiver())) {
+                                FeedbackResponsesLogicBranchCoverage.changeBranchState(34);
+                                if4 = true;
+                            } else {
+                                FeedbackResponsesLogicBranchCoverage.changeBranchState(35);
+                            }
+                        } else {
+                            FeedbackResponsesLogicBranchCoverage.changeBranchState(33);
+                        }
+
+                        if (!if4) {
+                            //Branches 36 to 39
+                            //Branches 36 37
+                            if (relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER_TEAM_MEMBERS)) {
+                                FeedbackResponsesLogicBranchCoverage.changeBranchState(36);
+                                //Branches 38 39
+                                if (studentsEmailInTeam.contains(response.getRecipient())) {
+                                    FeedbackResponsesLogicBranchCoverage.changeBranchState(38);
+                                } else {
+                                    FeedbackResponsesLogicBranchCoverage.changeBranchState(39);
+                                }
+                            } else {
+                                FeedbackResponsesLogicBranchCoverage.changeBranchState(37);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (relatedQuestion.getRecipientType() == FeedbackParticipantType.TEAMS //Branches 16 17
+                    && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER) //Branches 18 19
+                    && response.getRecipient().equals(student.getTeam())) { //Branches 20 21
                 isVisibleResponse = true;
-            } else if (relatedQuestion.getRecipientType() == FeedbackParticipantType.TEAMS_IN_SAME_SECTION
-                    && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER)
-                    && response.getRecipient().equals(student.getTeam())) {
+            } else if (relatedQuestion.getRecipientType() == FeedbackParticipantType.TEAMS_IN_SAME_SECTION //Branches 22 23
+                    && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER) //Branches 24 25
+                    && response.getRecipient().equals(student.getTeam())) { //Branches 26 27
                 isVisibleResponse = true;
-            } else if (relatedQuestion.getGiverType() == FeedbackParticipantType.TEAMS
-                    && response.getGiver().equals(student.getTeam())) {
+            } else if (relatedQuestion.getGiverType() == FeedbackParticipantType.TEAMS //Branches 28 29
+                    && response.getGiver().equals(student.getTeam())) { //Branches 30 31
                 isVisibleResponse = true;
-            } else if (relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.OWN_TEAM_MEMBERS)
-                    && studentsEmailInTeam.contains(response.getGiver())) {
+            } else if (relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.OWN_TEAM_MEMBERS) //Branches 32 33
+                    && studentsEmailInTeam.contains(response.getGiver())) { //Branches 34 35
                 isVisibleResponse = true;
-            } else if (relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER_TEAM_MEMBERS)
-                    && studentsEmailInTeam.contains(response.getRecipient())) {
+            } else if (relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER_TEAM_MEMBERS) //Branches 36 37
+                    && studentsEmailInTeam.contains(response.getRecipient())) { //Branches 38 39
                 isVisibleResponse = true;
             }
         }
-        if (isVisibleResponse && instructor != null) {
+
+        //Branches 40 to 43
+        //Branches 40 41
+        if (isVisibleResponse) {
+            FeedbackResponsesLogicBranchCoverage.changeBranchState(40);
+            //Branches 42 43
+            if (instructor != null) {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(42);
+            } else {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(43);
+            }
+        } else {
+            FeedbackResponsesLogicBranchCoverage.changeBranchState(41);
+        }
+
+        // Original code
+        if (isVisibleResponse && instructor != null) { // Branches 40 to 43
+            // Branches 44 45
             boolean isGiverSectionRestricted =
                     !instructor.isAllowedForPrivilege(response.getGiverSection(),
                             response.getFeedbackSessionName(),
                             Const.InstructorPermissions.CAN_VIEW_SESSION_IN_SECTIONS);
+
+            //Branches 44 45
+            if (isGiverSectionRestricted) {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(44);
+            } else {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(45);
+            }
+
             // If instructors are not restricted to view the giver's section,
             // they are allowed to view responses to GENERAL, subject to visibility options
+            //Branches 46 to 49
             boolean isRecipientSectionRestricted =
                     relatedQuestion.getRecipientType() != FeedbackParticipantType.NONE
                             && !instructor.isAllowedForPrivilege(response.getRecipientSection(),
                             response.getFeedbackSessionName(),
                             Const.InstructorPermissions.CAN_VIEW_SESSION_IN_SECTIONS);
 
+            //Branches 46 to 49
+            //Branches 46 47
+            if (relatedQuestion.getRecipientType() != FeedbackParticipantType.NONE) {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(46);
+                //Branches 48 49
+                if (!instructor.isAllowedForPrivilege(response.getRecipientSection(),
+                        response.getFeedbackSessionName(),
+                        Const.InstructorPermissions.CAN_VIEW_SESSION_IN_SECTIONS)) {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(48);
+                } else {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(49);
+                }
+            } else {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(47);
+            }
+
+            // Branches 50 to 53
             boolean isNotAllowedForInstructor = isGiverSectionRestricted || isRecipientSectionRestricted;
+            //Branches 50 51
+            if (isGiverSectionRestricted) {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(50);
+            } else {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(51);
+                //Branches 52 53
+                if (isRecipientSectionRestricted) {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(52);
+                } else {
+                    FeedbackResponsesLogicBranchCoverage.changeBranchState(53);
+                }
+            }
+
+            //Branches 54 55
             if (isNotAllowedForInstructor) {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(54);
+            } else {
+                FeedbackResponsesLogicBranchCoverage.changeBranchState(55);
+            }
+
+            if (isNotAllowedForInstructor) { //Branches 54 55
                 isVisibleResponse = false;
             }
         }
+        FeedbackResponsesLogicBranchCoverage.writeListBranchesCoveredInFile();
         return isVisibleResponse;
     }
 
