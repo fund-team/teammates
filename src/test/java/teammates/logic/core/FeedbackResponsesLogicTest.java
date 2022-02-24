@@ -844,6 +844,14 @@ public class FeedbackResponsesLogicTest extends BaseLogicTest {
                 "First Session", "FQLogicPCT.CS2104", "FQLogicPCT.garry@gmail.tmt",
                 true, question4.getId());
         assertEquals(0, bundle.getQuestionResponseMap().size());
+
+        // Alice will see 1 response
+        bundle = frLogic.getSessionResultsForUser(
+                "First Session", "FQLogicPCT.CS2104", "FQLogicPCT.alice.b@gmail.tmt",
+                false, question4.getId());
+        assertEquals(1, bundle.getQuestionResponseMap().size());
+        responseForQuestion = bundle.getQuestionResponseMap().entrySet().iterator().next().getValue();
+        assertEquals(1, responseForQuestion.size());
     }
 
     @Test
